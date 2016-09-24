@@ -8,7 +8,7 @@ Map.prototype.getTile = function(x,y){
 Map.prototype.draw = function (c){
 	for (var x = 0; x < this.level.width; x++){
 		for (var y = 0; y < this.level.height; y++){
-			c.drawImage(assets.getAsset('tile_'+getTile(x,y)), x*this.tileSize, y*this.tileSize);
+			c.drawImage(assets.getAsset('tile_'+this.getTile(x,y)), x*this.tileSize, y*this.tileSize);
 		}
 	}
 }

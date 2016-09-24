@@ -11,12 +11,12 @@ GameSubList.prototype.set = function(id, trait){
 	this.traits[id] = trait;
 }
 
-GameSubList.prototype.update = function (parent){
+GameSubList.prototype.update = function (dt,parent){
 
 	for (var key in this.traits) {
 		if (this.traits.hasOwnProperty(key)) {
 			if (typeof this.traits[key].update == "function"){
-				this.traits[key].update(parent)
+				this.traits[key].update(dt,parent)
 			}
 		}
 	}
