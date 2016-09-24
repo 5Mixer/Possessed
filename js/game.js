@@ -37,6 +37,7 @@ function game (){
 	}
 
 	var lastUpdate = Date.now();
+	var avFPS = 0;
 
 	function update () {
 		this.frame++;
@@ -45,17 +46,28 @@ function game (){
 		var dt = now - lastUpdate;
 		lastUpdate = now;
 
-		c.fillStyle = "hsl(10%, 50, 50)";
+		c.fillStyle = "hsl(0, 5%, 5%)";
 		c.fillRect(0,0,width,height);
 
 
 		this.camera.transform(c);
+
 		this.map.draw(c);
 
 		this.entities.update(dt,this);
 		this.entities.draw(c,this);
 
 		this.camera.reset(c);
+
+		if (frame % 5 == 0){
+			avFPS = Math.round((avFPS+Math.round(1000/dt))/2)
+			console.log(this.camera.pos);
+		}
+
+
+		c.fillStyle = "hsl(1400, 10%, 60%)";
+		c.font="20px Raleway";
+		c.fillText("FPS: "+avFPS,10,50);
 
 		requestAnimationFrame(update);
 	}

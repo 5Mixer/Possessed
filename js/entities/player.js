@@ -8,7 +8,11 @@ Player = function (game, x, y) {
 }
 Player.prototype.update = function (dt) {
 	this.components.update(dt,this);
+
+	camera.pos.x = this.components.get("sprite").pos.x * 4 - width*2;
+	camera.pos.y = this.components.get("sprite").pos.y * 4 - height*2;
 }
 Player.prototype.draw = function (c) {
 	this.components.draw(c,this);
+
 }
