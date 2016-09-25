@@ -12,6 +12,7 @@ function game (){
 
 	this.assets = new Assets();
 	this.assets.loadAll({
+		'mundane' : 'imgs/mundane.png',
 		'player' : 'imgs/player.png',
 		'tile_0' : 'imgs/tile_0.png',
 		'tile_1' : 'imgs/tile_1.png'
@@ -30,6 +31,7 @@ function game (){
 		this.map = new Map();
 
 		this.entities.add(new Player(this,width/2,height/2))
+		this.entities.add(new Mundane(this,width/2,height/2))
 
 		console.log(this.entities);
 
@@ -46,7 +48,7 @@ function game (){
 		var dt = now - lastUpdate;
 		lastUpdate = now;
 
-		c.fillStyle = "hsl(0, 5%, 5%)";
+		c.fillStyle = "hsl(0, 2%, 21%)";
 		c.fillRect(0,0,width,height);
 
 
