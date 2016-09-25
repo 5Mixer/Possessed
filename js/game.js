@@ -54,14 +54,14 @@ function game (){
 
 		this.map.draw(c);
 
-		this.entities.update(dt,this);
 		this.entities.draw(c,this);
+		this.entities.update(dt,this);
 
 		this.camera.reset(c);
 
 		if (frame % 5 == 0){
 			avFPS = Math.round((avFPS+Math.round(1000/dt))/2)
-			console.log(this.camera.pos);
+			//console.log(this.camera.pos);
 		}
 
 

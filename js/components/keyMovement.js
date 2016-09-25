@@ -3,19 +3,23 @@ keyMovement = function (parent){
 	this.speed = 2;
 }
 keyMovement.prototype.update = function (dt,parent){
+	var newPos = {x : parent.components.get('sprite').pos.x, y : parent.components.get('sprite').pos.y};
 	if (input.down('left')){
-		parent.components.get('sprite').pos.x -= this.speed;
+		newPos.x -= this.speed;
 	}
 	if (input.down('right')){
-		parent.components.get('sprite').pos.x += this.speed;
+		newPos.x += this.speed;
 	}
-
+	
 	if (input.down('up')){
-		parent.components.get('sprite').pos.y -= this.speed;
+		newPos.y -= this.speed;
 	}
 	if (input.down('down')){
-		parent.components.get('sprite').pos.y += this.speed;
+		newPos.y += this.speed;
 	}
 
+	if (!map.components.get('collision').doesCollide({ pos: {x:newPos.x-parent.components.get('sprite').origin.x,y:newPos.y-parent.components.get('sprite').origin.y}, width: parent.components.get('sprite').width, height: parent.components.get('sprite').height})){
+		parent.components.get('sprite').pos = newPos;
+	}
 
 }
