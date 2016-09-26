@@ -4,7 +4,7 @@ Cam = function (c){
 	this.scalex = 4;
 	this.scaley = 4;
 
-	this.width = width;
+	this.width = width/2;
 	this.height = height;
 
 	c.mozImageSmoothingEnabled = false;

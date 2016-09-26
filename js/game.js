@@ -3,6 +3,10 @@ function game (){
 	var cdom = document.getElementById('canvas')
 	var c = cdom.getContext('2d')
 
+	cdom.width = Math.floor(parseInt(getComputedStyle(canvas).width, 10)/2)*2;
+	cdom.height = Math.floor(cdom.width * .5 /2)*2
+	cdom.style.height = Math.floor(cdom.width * .5 /2)*2
+
 	this.width = cdom.width
 	this.height = cdom.height
 
@@ -24,14 +28,21 @@ function game (){
 	window.addEventListener('keyup', function (e) { input.onKeyup.call(input,e) }, false);
 	window.addEventListener('keydown', function (e) { input.onKeydown.call(input,e) }, false);
 
+	var p = undefined;
 
 	function start () {
 
 		this.camera = new Cam(c);
 		this.map = new Map();
+		p = new Player(this,0,0)
 
-		this.entities.add(new Player(this,width/2,height/2))
-		this.entities.add(new Mundane(this,width/2,height/2))
+
+		this.entities.add(p)
+
+		var m = new Mundane(this,-100,50)
+		m.components.get('possessable').onPossess.run(m);
+		this.entities.add(m)
+
 
 		console.log(this.entities);
 
@@ -47,6 +58,8 @@ function game (){
 		var now = Date.now();
 		var dt = now - lastUpdate;
 		lastUpdate = now;
+
+		console.log(p.components.get('sprite').pos)
 
 		c.fillStyle = "hsl(0, 2%, 21%)";
 		c.fillRect(0,0,width,height);

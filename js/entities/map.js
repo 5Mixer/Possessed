@@ -1,5 +1,5 @@
 Map = function (){
-	this.level = assets.getAsset('level_1');
+	this.level = level_1//assets.getAsset('level_1');
 	this.tileSize = 16;
 
 	//TODO: Load this from a file.
@@ -21,7 +21,7 @@ Map = function (){
 		for (var y = 0; y < this.level.height; y++){
 			if (this.getTile(x,y) == 1){
 				col.registerBox({
-					pos: { x: 300+x*this.tileSize, y: 250+y*this.tileSize },
+					pos: { x: x*this.tileSize, y: y*this.tileSize },
 					width: this.tileSize,
 					height: this.tileSize
 				});
@@ -42,7 +42,7 @@ Map.prototype.update = function (dt) {
 Map.prototype.draw = function (c){
 	for (var x = 0; x < this.level.width; x++){
 		for (var y = 0; y < this.level.height; y++){
-			c.drawImage(assets.getAsset('tile_'+this.getTile(x,y)), 300+x*this.tileSize, 250+y*this.tileSize);
+			c.drawImage(assets.getAsset('tile_'+this.getTile(x,y)), x*this.tileSize, y*this.tileSize);
 		}
 	}
 	this.components.draw(c,this);
