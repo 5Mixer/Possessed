@@ -5,10 +5,13 @@ GameSubList.prototype.get = function(id){
 	return this.traits[id];
 }
 GameSubList.prototype.add = function(trait){
-	this.traits[_.size(this.traits)] = trait;
+	return this.traits[_.size(this.traits)] = trait;
 }
 GameSubList.prototype.set = function(id, trait){
-	this.traits[id] = trait;
+	return this.traits[id] = trait;
+}
+GameSubList.prototype.remove = function(id){
+	this.traits = _.omit(this.traits,id);
 }
 
 GameSubList.prototype.update = function (dt,parent){

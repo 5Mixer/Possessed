@@ -1,8 +1,8 @@
 Circumstance = function (){
 	this.listeners = [];
 }
-Circumstance.prototype.listen = function(listener){
-	this.listeners.push(listener);
+Circumstance.prototype.listen = function(listener,context){
+	this.listeners.push({ func: listener, context: context});
 }
 Circumstance.prototype.unlisten = function (listener){
 	var index = this.listeners.indexOf(listeners);
@@ -11,8 +11,7 @@ Circumstance.prototype.unlisten = function (listener){
 	}
 }
 Circumstance.prototype.run = function (o){
-	
 	for (var i=0; i<this.listeners.length; i++){
-		this.listeners[i](o);
+		this.listeners[i].func.call(this.listeners[i].context,o);
 	}
 }

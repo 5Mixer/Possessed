@@ -3,20 +3,17 @@ Player = function (game, x, y) {
 
 	this.components = new GameSubList();
 	this.components.set('events', new EventManager());
-	this.components.set("sprite", new Sprite('player',32,32));
-	this.components.set("movement", new KeyMovement());
+	this.components.set("sprite", new Sprite(this,'player',32,32));
+	this.components.set("possessable", new Possessable(this));
 
-	// this.components.set("walkRandomly", new walkRandomly());
+	this.components.get('sprite').clickHandler.onClick.listen(function(){
+		this.components.get('possessable').onPossess.run()
+	},this)
 }
-
 
 Player.prototype.update = function (dt) {
 	this.components.update(dt,this);
-
-	camera.pos.x = this.components.get("sprite").pos.x * 4 - width*1.25;
-	camera.pos.y = this.components.get("sprite").pos.y * 4 - height*2;
 }
 Player.prototype.draw = function (c) {
 	this.components.draw(c,this);
-
 }

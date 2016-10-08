@@ -4,9 +4,11 @@ Possessable = function (parent){
 	this.onUnPossess = new Circumstance();
 
 	this.onPossess.listen(function (o){
-		console.log("Oh")
+		if (game.currentlyPossessed != undefined){
+			game.currentlyPossessed.components.remove('movement');
+		}
+		game.currentlyPossessed = parent;
 		parent.components.set('movement', new KeyMovement(parent));
-		console.log(parent.components);
 	});
 	this.onUnPossess.listen(function (){
 		parent.components.remove('movement');
