@@ -13,6 +13,9 @@ GameSubList.prototype.set = function(id, trait){
 GameSubList.prototype.remove = function(id){
 	this.traits = _.omit(this.traits,id);
 }
+GameSubList.prototype.length = function(){
+	return _.size(this.traits);
+}
 
 GameSubList.prototype.update = function (dt,parent){
 

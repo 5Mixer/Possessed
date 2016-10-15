@@ -1,9 +1,9 @@
 Input = function (){
 	this.binds = {
-		'up' : [38],
-		'down' : [40],
-		'left' : [37],
-		'right' : [39]
+		'up' : [38,87],
+		'down' : [40,83],
+		'left' : [37,65],
+		'right' : [39,68]
 	}
 
 
@@ -11,6 +11,8 @@ Input = function (){
 	this.mouse = {
 		x: 0,
 		y: 0,
+		worldx: 0,
+		worldy: 0,
 		left: false,
 		right: false
 	}

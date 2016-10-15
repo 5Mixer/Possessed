@@ -9,7 +9,6 @@ ClickEvent.prototype.click = function (e){
 	var mousex = game.camera.screenToWorld(e).x;
 	var mousey = game.camera.screenToWorld(e).y;
 
-
 	if (this.region.x < mousex && this.region.x+this.region.width > mousex &&
 		this.region.y < mousey && this.region.y+this.region.height > mousey){
 

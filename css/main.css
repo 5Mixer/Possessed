@@ -5,7 +5,7 @@ body {
 h1 {
 	color: rgb(231, 222, 222);
 	font-family: 'Patua One', cursive;
-
+	margin:0;
 }
 #game {
 	margin-left: 20px;

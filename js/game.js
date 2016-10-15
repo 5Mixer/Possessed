@@ -1,21 +1,28 @@
 //Game start point.
 function game (){
-	var cdom = document.getElementById('canvas')
+
+	game = this;
+
+
+	this.cdom = document.getElementById('canvas')
 	this.c = cdom.getContext('2d')
 
 	cdom.width = Math.floor(parseInt(getComputedStyle(canvas).width, 10)/2)*2;
 	cdom.height = Math.floor(cdom.width * .5 /2)*2
 	cdom.style.height = Math.floor(cdom.width * .5 /2)*2
 
+	this.panelWidth = cdom.width * .3;
 
-	this.width = cdom.width
+	this.width = cdom.width - panelWidth;
 	this.height = cdom.height
 
 	this.frame = 0;
 
 	this.events = {
 		'click' : new Circumstance(),
-		'mousemove' : new Circumstance()
+		'mousemove' : new Circumstance(),
+		'mousedown' : new Circumstance(),
+		'mouseup' : new Circumstance()
 	}
 
 	this.entities = new GameSubList();
@@ -23,10 +30,12 @@ function game (){
 	this.assets = new Assets();
 	this.assets.loadAll({
 		'mundane' : 'imgs/mundane.png',
-		'player' : 'imgs/player.png',
-		'tile_0' : 'imgs/tile_0.png',
-		'tile_1' : 'imgs/tile_1.png',
-		'cursor' : 'imgs/Crosshair.png'
+		'player'  : 'imgs/player.png',
+		'tile_0'  : 'imgs/tile_0.png',
+		'tile_1'  : 'imgs/tile_1.png',
+		'cursor'  : 'imgs/Crosshair.png',
+		'gun'     : 'imgs/gun.png',
+		'bullet'  : 'imgs/bullet.png'
 	},start)
 
 
@@ -42,16 +51,37 @@ function game (){
 			x: e.clientX - rect.left,
 			y: e.clientY - rect.top
 		});
+		console.log(e)
 	});
 
 	cdom.addEventListener("mousemove", function(e) {
 		var rect = cdom.getBoundingClientRect();
-
-		game.events['mousemove'].run.call(game.events['mousemove'] ,{
+		var pos = {
 			x: e.clientX - rect.left,
 			y: e.clientY - rect.top
-		});
+		};
+		game.events['mousemove'].run.call(game.events['mousemove'] ,pos);
+		input.mouse.x = pos.x
+		input.mouse.y = pos.y
 	});
+
+	cdom.addEventListener("mousedown",function (){
+		input.mouse.left = true;
+		game.events['mousedown'].run()
+	})
+	cdom.addEventListener("mouseup",function (){
+		input.mouse.left = false;
+		game.events['mouseup'].run()
+	})
+
+	this.events['mousemove'].listen(function(e){
+		input.mouse.x = e.x;
+		input.mouse.y = e.y;
+
+		var worldPos = this.camera.screenToWorld(e);
+		input.mouse.worldx = worldPos.x;
+		input.mouse.worldy = worldPos.y;
+	},this);
 
 	/*cdom.addEventListener('mousemove', function(evt) {
 		var	mousePos = getMousePos(canvas, evt);
@@ -63,10 +93,18 @@ function game (){
 	var p = undefined;
 
 	this.currentlyPossessed = undefined;
+	this.onPossess = new Circumstance();
+	this.onUnPossess = new Circumstance();
+	this.thoughtsPanel = new thoughtsPanel();
+	this.itemsPanel = new ItemsPanel();
 
-
-
-	game = this;
+	var meter = new FPSMeter(undefined, {
+				theme: 'dark',
+				heat: 1,
+				graph: 1,
+				top: '60px',
+				left: '40px'
+			});
 
 	function start () {
 
@@ -78,7 +116,6 @@ function game (){
 		p = new Player(this,0,0)
 		this.entities.add(p)
 
-
 		cdom.style.cursor = assets.getAsset('cursor')
 
 
@@ -87,6 +124,8 @@ function game (){
 		this.entities.add(m)
 		this.currentlyPossessed = m;
 
+		this.possessionParticles = new ParticleSystem(0,0);
+		this.entities.add(this.possessionParticles);
 
 		console.log(this.entities);
 
@@ -96,7 +135,11 @@ function game (){
 	var lastUpdate = Date.now();
 	var avFPS = 0;
 
+
+	c.font="20px Raleway";
+
 	function update () {
+		meter.tickStart();
 		this.frame++;
 
 		var now = Date.now();
@@ -114,27 +157,33 @@ function game (){
 		this.entities.draw(c,this);
 		this.entities.update(dt,this);
 
+		possessionParticles.behaviour = currentlyPossessed == p ? "grid" : "swirl"
+
+
 		this.camera.reset(c);
 
 		if (this.currentlyPossessed != undefined){
+			var possessedSprite = currentlyPossessed.components.get("sprite")
 
-			camera.pos.x = currentlyPossessed.components.get("sprite").pos.x * 4 - width*1.25;
-			camera.pos.y = currentlyPossessed.components.get("sprite").pos.y * 4 - height*2;
+			camera.target.x = possessedSprite.pos.x * 4 - width*1.25;
+			camera.target.y = possessedSprite.pos.y * 4 - height*2;
+
+			possessionParticles.pos.x = possessedSprite.pos.x - possessedSprite.origin.x/4;
+			possessionParticles.pos.y = possessedSprite.pos.y - possessedSprite.origin.y/4;
 		}
 
-		if (frame % 5 == 0){
+		if (frame % 2 == 0){
 			avFPS = Math.round((avFPS+Math.round(1000/dt))/2)
 			//console.log(this.camera.pos);
 		}
 
+		itemsPanel.draw(c);
+		thoughtsPanel.draw(c);
+
 		cursor.update();
 		cursor.draw(c);
 
-
-		c.fillStyle = "hsl(1400, 10%, 60%)";
-		c.font="20px Raleway";
-		c.fillText("FPS: "+avFPS,10,50);
-
+		meter.tick();
 		requestAnimationFrame(update);
 	}
 }
