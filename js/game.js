@@ -113,16 +113,8 @@ function game (){
 		this.camera = new Cam(c);
 		this.map = new Map();
 
-		p = new Player(this,0,0)
-		this.entities.add(p)
-
+		
 		cdom.style.cursor = assets.getAsset('cursor')
-
-
-		var m = new Mundane(this,-100,50)
-		m.components.get('possessable').onPossess.run(m);
-		this.entities.add(m)
-		this.currentlyPossessed = m;
 
 		this.possessionParticles = new ParticleSystem(0,0);
 		this.entities.add(this.possessionParticles);

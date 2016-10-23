@@ -1,9 +1,9 @@
 Mundane = function (game, x, y) {
-	this.map = map;
+	this.map = game.map;
 
 	this.components = new GameSubList();
 	this.components.set('events', new EventManager());
-	this.components.set("sprite", new Sprite(this,'mundane',64,64));
+	this.components.set("sprite", new Sprite(this,'mundane',x,y));
 	var possession = this.components.set("possessable", new Possessable(this));
 
 	possession.thoughts = [
@@ -14,6 +14,7 @@ Mundane = function (game, x, y) {
 			name: "gun",
 			description: "A somewhat heavy pistol",
 			image: "gun",
+			
 			onSelect : function (currentlyPossessed){
 				if (this.components.get("shoot") == undefined){
 
@@ -23,6 +24,7 @@ Mundane = function (game, x, y) {
 					this.components.get("shoot").bullet = Bullet;
 				}
 			},
+			
 			onUnSelect : function (currentlyPossessed){
 				this.components.get("shoot").active = false;
 			}

@@ -29,6 +29,8 @@ Map = function (){
 		}
 	}
 	this.components.set('collision',col);
+	
+	this.level.onLoad(game);
 }
 Map.prototype.getTile = function(x,y){
 	return this.level.tiles[(y*this.level.width)+x];
